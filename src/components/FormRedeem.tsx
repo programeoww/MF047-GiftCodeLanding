@@ -1,4 +1,3 @@
-'use client'
 import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import Popup from "./Popup";
@@ -17,7 +16,7 @@ type PopupContent = {
     content: string
 }
 
-function Form() {
+function FormRedeem() {
     const { control, register, handleSubmit, formState: { errors }, clearErrors, setError, reset } = useForm<FormValues>({
         defaultValues: {
             name: '',
@@ -108,4 +107,4 @@ function Form() {
     );
 }
 
-export default Form;
+export default FormRedeem;

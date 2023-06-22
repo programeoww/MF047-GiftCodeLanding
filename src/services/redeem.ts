@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+const instance = axios.create({
+    baseURL: import.meta.env.VITE_DOMAIN,
+  });
+
 type redeemData = {
     name: string,
     phone: string,
@@ -20,7 +24,7 @@ type redeemResponse = {
 }
 
 export default async function redeem(redeemData: redeemData) {
-    const { data } = await axios.post<redeemResponse>(`${process.env.NEXT_PUBLIC_API_URL}/redeem`, redeemData);
+    const { data } = await instance.post<redeemResponse>(`/wp-json/gift-code/v1/redeem`, redeemData);
     
     return data;
 }

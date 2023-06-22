@@ -1,8 +1,7 @@
-'use client'
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment } from 'react'
 
-export default function Popup({ isOpen = false, onClose = () => {},title = '',closeBtn = '' , children } : { isOpen?: boolean,onClose?: ()=>void, children: React.ReactNode, title?: string, closeBtn?: string }) {
+export default function Popup({ isOpen = false, onClose = () => {return;},title = '',closeBtn = '' , children } : { isOpen?: boolean,onClose?: ()=>void, children: React.ReactNode, title?: string, closeBtn?: string }) {
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
