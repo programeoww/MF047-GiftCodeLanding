@@ -6,7 +6,7 @@ function useFirebase(firebaseConfig: InitialData["firebaseConfig"]) {
 
   const firebase = initializeApp(firebaseConfig);
   const auth = getAuth(firebase);
-  // auth.settings.appVerificationDisabledForTesting = true;
+  auth.settings.appVerificationDisabledForTesting = true;
 
   return {firebase, auth}
 }

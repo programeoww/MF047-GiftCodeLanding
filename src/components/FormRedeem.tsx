@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import Popup from "./Popup";
 import redeem from "../services/redeem";
+import InitialData from "../interfaces/initialData";
 
 type FormValues = {
     name: string
@@ -16,7 +17,7 @@ type PopupContent = {
     content: string
 }
 
-function FormRedeem() {
+function FormRedeem({ redirectUrl }: { redirectUrl: InitialData['redirectUrl'] }) {
     const { control, register, handleSubmit, formState: { errors }, clearErrors, setError, reset } = useForm<FormValues>({
         defaultValues: {
             name: '',
@@ -43,16 +44,17 @@ function FormRedeem() {
         const res = await redeem(data)
 
         setIsLoading(false)
-        if(res.success) {
+        if(res.success && res.data.message) {
             setPopupContent({
                 title: res.success ? 'Thành công' : 'Thất bại',
-                content: res.data.message!
+                content: res.data.message
             })
     
             setIsPopupOpen(true)
             reset()
-        } else {
-            res.data.code!.forEach((element,index) => {
+            window.location.href = redirectUrl
+        } else if(res.data.code) {
+            res.data.code.forEach((element,index) => {
                 setError(`code.${index}.value`, {type: 'manual', message: element.error})
             });
         }

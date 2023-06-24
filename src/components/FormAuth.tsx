@@ -75,7 +75,7 @@ function FormAuth({firebaseConfig}: {firebaseConfig: InitialData['firebaseConfig
                 if(userDataRes.success){
                     setPopupContent({
                         title: 'Thành công',
-                        content: 'Bạn đã đăng ký tài khoản thành công! Đang chuyển hướng...'
+                        content: 'Bạn đã đăng nhập thành công! Đang chuyển hướng...'
                     })
                     setIsPopupOpen(true)
                     reset()
@@ -109,25 +109,6 @@ function FormAuth({firebaseConfig}: {firebaseConfig: InitialData['firebaseConfig
                 setIsLoading(false)
             }
         }
-
-        // send_otp({countrycode: '+84', mobileNo: data.phone, type: 'register'})
-
-        // const res = await redeem(data)
-
-        // setIsLoading(false)
-        // if(res.success) {
-        //     setPopupContent({
-        //         title: res.success ? 'Thành công' : 'Thất bại',
-        //         content: res.data.message!
-        //     })
-    
-        //     setIsPopupOpen(true)
-        //     reset()
-        // } else {
-        //     res.data.code!.forEach((element,index) => {
-        //         setError(`code.${index}.value`, {type: 'manual', message: element.error})
-        //     });
-        // }
     };
 
     return (

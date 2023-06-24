@@ -2,6 +2,7 @@ export default interface InitialData {
     logo: string
     bg_image: string
     is_logged_in: false | number
+    redirectUrl: string
     firebaseConfig: {
         apiKey: string
         authDomain: string
