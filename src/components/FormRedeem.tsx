@@ -61,7 +61,7 @@ function FormRedeem({ redirectUrl }: { redirectUrl: InitialData['redirectUrl'] }
     };
 
     return (
-    <div className='bg-white rounded px-8 py-10 shadow-lg'>
+    <div className='bg-[#fdbc5a] rounded px-8 py-10 shadow-lg'>
         <h1 className='text-3xl capitalize font-bold text-center mb-2'>Đổi mã</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className='mb-4'>
@@ -91,7 +91,7 @@ function FormRedeem({ redirectUrl }: { redirectUrl: InitialData['redirectUrl'] }
                     </div>
                 ))}
             </div>
-            <button disabled={isLoading} type="submit" className={`${isLoading ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary'} items-center leading-none px-3 py-2 rounded mx-auto hover:shadow-[inset_0_0_0_100px_rgba(0,0,0,0.2)] duration-150 flex`}>
+            <button disabled={isLoading} type="submit" className={`${isLoading ? 'bg-gray-300 cursor-not-allowed' : 'bg-[#1f3d3d]'} text-white items-center leading-none px-3 py-2 rounded mx-auto hover:shadow-[inset_0_0_0_100px_rgba(0,0,0,0.2)] duration-150 flex`}>
                 <span>Gửi</span>
                 <svg className={`${isLoading ? 'w-5 ml-2 scale-100' : 'w-0 ml-0 scale-0'} duration-75 ease-linear h-5`} version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" xmlSpace="preserve">
                     <path fill="#000" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
