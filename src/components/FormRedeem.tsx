@@ -17,11 +17,12 @@ type PopupContent = {
     content: string
 }
 
-function FormRedeem({ redirectUrl }: { redirectUrl: InitialData['redirectUrl'] }) {
+function FormRedeem({ redirectUrl, userID }: { redirectUrl: InitialData['redirectUrl'],userID: InitialData['userID'] }) {
+    const queryParameters = new URLSearchParams(window.location.search)
     const { control, register, handleSubmit, formState: { errors }, clearErrors, setError, reset } = useForm<FormValues>({
         defaultValues: {
             name: '',
-            phone: '',
+            phone: queryParameters.get("phone") || "",
             code: [
                 {value: ''}
             ]
@@ -41,7 +42,7 @@ function FormRedeem({ redirectUrl }: { redirectUrl: InitialData['redirectUrl'] }
         clearErrors()
         setIsLoading(true)
 
-        const res = await redeem(data)
+        const res = await redeem(data, userID)
 
         setIsLoading(false)
         if(res.success && res.data.message) {

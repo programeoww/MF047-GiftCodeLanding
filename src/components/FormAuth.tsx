@@ -4,7 +4,7 @@ import { check_mob, loginUser, registerUser, send_otp, verifyOtp } from "../serv
 import useFirebase from "../services/firebase";
 import InitialData from "../interfaces/initialData";
 import { ConfirmationResult, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import Popup from "./Popup";
+// import Popup from "./Popup";
 
 type FormValues = {
     phone: string,
@@ -12,10 +12,10 @@ type FormValues = {
     otp?: string
 }
 
-type PopupContent = {
-    title: string
-    content: string
-}
+// type PopupContent = {
+//     title: string
+//     content: string
+// }
 
 function FormAuth({firebaseConfig}: {firebaseConfig: InitialData['firebaseConfig']}) {
     const { register, handleSubmit, formState: { errors }, clearErrors, reset, setError, setFocus } = useForm<FormValues>({
@@ -28,9 +28,9 @@ function FormAuth({firebaseConfig}: {firebaseConfig: InitialData['firebaseConfig
 
     const [isLogin, setIsLogin] = useState<boolean>(true)
     const [isOtpSent, setIsOtpSent] = useState<boolean>(false)
-    const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false)
+    // const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [popupContent, setPopupContent] = useState<PopupContent>({title: '', content: ''})
+    // const [popupContent, setPopupContent] = useState<PopupContent>({title: '', content: ''})
     const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult>()
 
     useEffect(() => {
@@ -73,13 +73,8 @@ function FormAuth({firebaseConfig}: {firebaseConfig: InitialData['firebaseConfig
             if(result.success){
                 const userDataRes = await loginUser({countrycode: '+84',user: data.phone, ftoken: result.message, otp: data.otp, dig_ftoken: result.message})
                 if(userDataRes.success){
-                    setPopupContent({
-                        title: 'Thành công',
-                        content: 'Bạn đã đăng nhập thành công! Đang chuyển hướng...'
-                    })
-                    setIsPopupOpen(true)
                     reset()
-                    window.location.href = '/tich-diem?access_token=' + userDataRes.data.access_token
+                    window.location.href = '/tich-diem?access_token=' + userDataRes.data.access_token + '&phone=' + data.phone
                 }else{
                     setIsLoading(false)
                     setError("phone", {type: 'manual', message: "Số điện thoại chưa được đăng ký"})
@@ -93,13 +88,8 @@ function FormAuth({firebaseConfig}: {firebaseConfig: InitialData['firebaseConfig
             if(result.success){
                 const userDataRes = await registerUser({digits_reg_countrycode: '+84',digits_reg_name: data.name, digits_reg_mobile: data.phone, ftoken: result.message, otp: data.otp})
                 if(userDataRes.success){
-                    setPopupContent({
-                        title: 'Thành công',
-                        content: 'Bạn đã đăng ký tài khoản thành công! Đang chuyển hướng...'
-                    })
-                    setIsPopupOpen(true)
                     reset()
-                    window.location.href = '/tich-diem?access_token=' + userDataRes.data.access_token
+                    window.location.href = '/tich-diem?access_token=' + userDataRes.data.access_token + '&phone=' + data.phone
                 }else{
                     setIsLoading(false)
                     setError("otp", {type: 'manual', message: "Số điện thoại đã được đăng ký"})
@@ -154,11 +144,11 @@ function FormAuth({firebaseConfig}: {firebaseConfig: InitialData['firebaseConfig
             </button>
             <div id="recaptcha-container"></div>
         </form>
-        <Popup isOpen={isPopupOpen} onClose={()=>setIsPopupOpen(false)} closeBtn="Đóng" title={popupContent.title}>
+        {/* <Popup isOpen={isPopupOpen} onClose={()=>setIsPopupOpen(false)} closeBtn="Đóng" title={popupContent.title}>
             <div className=''>
                 {popupContent.content}
             </div>
-        </Popup>
+        </Popup> */}
     </div>
     );
 }

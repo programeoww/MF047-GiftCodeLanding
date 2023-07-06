@@ -17,7 +17,7 @@ function App({ initialData }: {initialData: InitialData}) {
           <img src={initialData?.logo} alt="logo" className="mx-auto object-contain" />
         </div>
         {
-          initialData.is_logged_in ? <FormRedeem redirectUrl={initialData.redirectUrl}/> : <FormAuth firebaseConfig={initialData.firebaseConfig}/>
+          initialData.is_logged_in ? <FormRedeem redirectUrl={initialData.redirectUrl} userID={initialData.userID}/> : <FormAuth firebaseConfig={initialData.firebaseConfig}/>
         }
       </div>
     </div>

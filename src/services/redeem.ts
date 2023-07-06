@@ -23,8 +23,8 @@ type redeemResponse = {
     }
 }
 
-export default async function redeem(redeemData: redeemData) {
-    const { data } = await instance.post<redeemResponse>(`/wp-json/gift-code/v1/redeem`, redeemData);
+export default async function redeem(redeemData: redeemData, userID: string) {
+    const { data } = await instance.post<redeemResponse>(`/wp-json/gift-code/v1/redeem`, {...redeemData, userID});
     
     return data;
 }
