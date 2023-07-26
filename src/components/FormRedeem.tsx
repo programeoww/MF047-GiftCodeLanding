@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import Popup from "./Popup";
+// import Popup from "./Popup";
 import redeem from "../services/redeem";
 import InitialData from "../interfaces/initialData";
 
@@ -12,10 +12,10 @@ type FormValues = {
     }[]
 }
 
-type PopupContent = {
-    title: string
-    content: string
-}
+// type PopupContent = {
+//     title: string
+//     content: string
+// }
 
 function FormRedeem({ redirectUrl, userID }: { redirectUrl: InitialData['redirectUrl'],userID: InitialData['userID'] }) {
     const queryParameters = new URLSearchParams(window.location.search)
@@ -34,9 +34,9 @@ function FormRedeem({ redirectUrl, userID }: { redirectUrl: InitialData['redirec
         name: "code",
       });
 
-    const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false)
+    // const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [popupContent, setPopupContent] = useState<PopupContent>({title: '', content: ''})
+    // const [popupContent, setPopupContent] = useState<PopupContent>({title: '', content: ''})
 
     const onSubmit = async (data: FormValues) => {
         clearErrors()
@@ -46,12 +46,12 @@ function FormRedeem({ redirectUrl, userID }: { redirectUrl: InitialData['redirec
 
         setIsLoading(false)
         if(res.success && res.data.message) {
-            setPopupContent({
-                title: res.success ? 'Thành công' : 'Thất bại',
-                content: res.data.message
-            })
+            // setPopupContent({
+            //     title: res.success ? 'Thành công' : 'Thất bại',
+            //     content: res.data.message
+            // })
     
-            setIsPopupOpen(true)
+            // setIsPopupOpen(true)
             reset()
             window.location.href = redirectUrl
         } else if(res.data.code) {
@@ -101,11 +101,11 @@ function FormRedeem({ redirectUrl, userID }: { redirectUrl: InitialData['redirec
                 </svg>
             </button>
         </form>
-        <Popup isOpen={isPopupOpen} onClose={()=>setIsPopupOpen(false)} closeBtn="Đóng" title={popupContent.title}>
+        {/* <Popup isOpen={isPopupOpen} onClose={()=>setIsPopupOpen(false)} closeBtn="Đóng" title={popupContent.title}>
             <div className=''>
                 {popupContent.content}
             </div>
-        </Popup>
+        </Popup> */}
     </div>
     );
 }

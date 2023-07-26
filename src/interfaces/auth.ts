@@ -2,8 +2,6 @@ export interface ILoginData {
   user: string;
   countrycode: string;
   otp: string;
-  ftoken: string;
-  dig_ftoken: string;
 }
 
 export interface IRegisterData {
@@ -11,7 +9,6 @@ export interface IRegisterData {
   digits_reg_countrycode: string;
   digits_reg_mobile: string;
   otp: string;
-  ftoken: string;
 }
 
 interface IResponse {

@@ -1,6 +1,5 @@
 import axios from "axios";
-import { IAuthError, ICheckMobResponse, ILoginData, ILoginResponse, IOtpData, IRegisterData, IRegisterResponse } from "../interfaces/auth";
-import { ConfirmationResult, UserCredential } from "firebase/auth";
+import { ICheckMobResponse, ILoginData, ILoginResponse, IOtpData, IRegisterData, IRegisterResponse } from "../interfaces/auth";
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_DOMAIN,
@@ -37,21 +36,32 @@ export async function check_mob(mobileNo: string, type: string) : Promise<ICheck
   return data;
 }
 
-export async function verifyOtp(confirmationResult: ConfirmationResult, otp: string, mobileNo: string, type: string ): Promise<{ success: boolean, message: string, code: string | number }> {
-  if(confirmationResult && otp && mobileNo && type){
-      try {
-          mobileNo = mobileNo.replace('+84', "");
-          const result: UserCredential = await confirmationResult.confirm(otp)
-          const idToken: string = await result.user.getIdToken()
-          const { data } = await instance.post<{code: string | number}>(`/wp-json/digits/v1/verify_otp`, createFormData({countrycode: '+84', mobileNo: mobileNo, otp: otp, type: type, dig_ftoken: idToken}));
-          if(data.code == 1){
-            return { success: true, message: idToken, code: 'success' }
-          }else{
-            return { success: false, message: "Xác thực OTP thất bại", code: data.code }
-          }
-      } catch (error) {
-          return { success: false, message: (error as IAuthError).message, code: (error as IAuthError).code }
-      }
-  }
-  return { success: false, message: "Có lỗi xảy ra", code: 'unknown' }
+// export async function verifyOtp(confirmationResult: ConfirmationResult, otp: string, mobileNo: string, type: string ): Promise<{ success: boolean, message: string, code: string | number }> {
+//   if(confirmationResult && otp && mobileNo && type){
+//       try {
+//           mobileNo = mobileNo.replace('+84', "");
+//           const result: UserCredential = await confirmationResult.confirm(otp)
+//           const idToken: string = await result.user.getIdToken()
+//           const { data } = await instance.post<{code: string | number}>(`/wp-json/digits/v1/verify_otp`, createFormData({countrycode: '+84', mobileNo: mobileNo, otp: otp, type: type, dig_ftoken: idToken}));
+//           if(data.code == 1){
+//             return { success: true, message: idToken, code: 'success' }
+//           }else{
+//             return { success: false, message: "Xác thực OTP thất bại", code: data.code }
+//           }
+//       } catch (error) {
+//           return { success: false, message: (error as IAuthError).message, code: (error as IAuthError).code }
+//       }
+//   }
+//   return { success: false, message: "Có lỗi xảy ra", code: 'unknown' }
+// }
+
+export async function verifyOtp(mobileNo: string, type: 'login' | 'register' | 'resetpass' | 'update', otp: string){
+  const { data } = await instance.post(`/wp-json/digits/v1/verify_otp`, createFormData({
+    mobileNo: mobileNo.replace('+84', ""),
+    countrycode: '+84',
+    type: type,
+    otp: otp,
+    whatsapp: '0'
+  }))
+  return data;
 }

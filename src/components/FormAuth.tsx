@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { check_mob, loginUser, registerUser, send_otp, verifyOtp } from "../services/auth";
-import useFirebase from "../services/firebase";
-import InitialData from "../interfaces/initialData";
-import { ConfirmationResult, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 // import Popup from "./Popup";
 
 type FormValues = {
@@ -17,21 +14,19 @@ type FormValues = {
 //     content: string
 // }
 
-function FormAuth({firebaseConfig}: {firebaseConfig: InitialData['firebaseConfig']}) {
+function FormAuth() {
     const { register, handleSubmit, formState: { errors }, clearErrors, reset, setError, setFocus } = useForm<FormValues>({
         defaultValues: {
             phone: '',
         }
     });
 
-    const { auth } = useFirebase(firebaseConfig)
-
     const [isLogin, setIsLogin] = useState<boolean>(true)
     const [isOtpSent, setIsOtpSent] = useState<boolean>(false)
     // const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     // const [popupContent, setPopupContent] = useState<PopupContent>({title: '', content: ''})
-    const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult>()
+    // const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult>()
 
     useEffect(() => {
         reset()
@@ -49,9 +44,9 @@ function FormAuth({firebaseConfig}: {firebaseConfig: InitialData['firebaseConfig
         clearErrors()
         setIsLoading(true)
 
-        const verifier = new RecaptchaVerifier('recaptcha-container', {
-            'size': 'invisible'
-        }, auth)
+        // const verifier = new RecaptchaVerifier('recaptcha-container', {
+        //     'size': 'invisible'
+        // }, auth)
 
         data.phone = '+84' + data.phone.substring(1)
 
@@ -59,19 +54,19 @@ function FormAuth({firebaseConfig}: {firebaseConfig: InitialData['firebaseConfig
             const check_mob_result = await check_mob(data.phone, isLogin ? 'login' : 'register')
                
             if(check_mob_result.success){
-                await send_otp({countrycode: '+84', mobileNo: data.phone, type: 'register'})
-                const result = await signInWithPhoneNumber(auth, data.phone, verifier)
-                setConfirmationResult(result)
+                await send_otp({countrycode: '+84', mobileNo: data.phone, type: isLogin ? 'login' : 'register'})
+                // const result = await signInWithPhoneNumber(auth, data.phone, verifier)
+                // setConfirmationResult(result)
                 setIsOtpSent(true)
                 setIsLoading(false)
             }else{
                 setError("phone", {type: 'manual', message: isLogin ? "Số điện thoại chưa được đăng ký" : "Số điện thoại đã được đăng ký"})
                 setIsLoading(false)
             }
-        } else if(isLogin && confirmationResult && data.otp){
-            const result = await verifyOtp(confirmationResult, data.otp, data.phone, 'login')
-            if(result.success){
-                const userDataRes = await loginUser({countrycode: '+84',user: data.phone, ftoken: result.message, otp: data.otp, dig_ftoken: result.message})
+        } else if(isLogin && data.otp){
+            const result = await verifyOtp(data.phone,'login', data.otp)
+            if(result.code == 1){
+                const userDataRes = await loginUser({countrycode: '+84',user: data.phone, otp: data.otp})
                 if(userDataRes.success){
                     reset()
                     window.location.href = '/tich-diem?access_token=' + userDataRes.data.access_token + '&phone=' + data.phone
@@ -83,10 +78,10 @@ function FormAuth({firebaseConfig}: {firebaseConfig: InitialData['firebaseConfig
                 setError("otp", {type: 'manual', message: "Mã OTP không đúng"})
                 setIsLoading(false)
             }
-        } else if(!isLogin && confirmationResult && data.otp){
-            const result = await verifyOtp(confirmationResult, data.otp, data.phone, 'register')
-            if(result.success){
-                const userDataRes = await registerUser({digits_reg_countrycode: '+84',digits_reg_name: data.name, digits_reg_mobile: data.phone, ftoken: result.message, otp: data.otp})
+        } else if(!isLogin && data.otp){
+            const result = await verifyOtp(data.phone,'register', data.otp)
+            if(result.code == 1){
+                const userDataRes = await registerUser({digits_reg_countrycode: '+84',digits_reg_name: data.name, digits_reg_mobile: data.phone, otp: data.otp})
                 if(userDataRes.success){
                     reset()
                     window.location.href = '/tich-diem?access_token=' + userDataRes.data.access_token + '&phone=' + data.phone
