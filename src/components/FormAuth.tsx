@@ -124,9 +124,9 @@ function FormAuth() {
             }
             {
                 isLogin ? (
-                    <p className="mb-4 text-sm">Chưa có tài khoản? <span className="cursor-pointer" onClick={()=>setIsLogin(false)}>Đăng ký ngay</span></p>
+                    <p className="mb-4 text-sm">Chưa có tài khoản? <span className="cursor-pointer font-semibold underline" onClick={()=>setIsLogin(false)}>Đăng ký ngay</span></p>
                 ) : (
-                    <p className="mb-4 text-sm">Đã có tài khoản? <span className="cursor-pointer" onClick={()=>setIsLogin(true)}>Đăng nhập ngay</span></p>
+                    <p className="mb-4 text-sm">Đã có tài khoản? <span className="cursor-pointer font-semibold underline" onClick={()=>setIsLogin(true)}>Đăng nhập ngay</span></p>
                 )
             }
             <button disabled={isLoading} type="submit" className={`${isLoading ? 'bg-gray-300 cursor-not-allowed' : 'bg-[#1f3d3d]'} text-white items-center leading-none px-3 py-2 rounded mx-auto hover:shadow-[inset_0_0_0_100px_rgba(0,0,0,0.2)] duration-150 flex`}>
